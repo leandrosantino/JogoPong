@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Canvas</title>
+    <style>
+        canvas{
+            
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        .placar{
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+
+            margin-left: 5px;
+            margin-top: 32px;
+
+            background-color: blue;
+            width: 60px;
+            height: 150px;
+            font: bold 8 arial;
+        }
+        input{
+            margin-top: 50px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="placar">
+        <p>player1</p>
+        <div id="placar1">0</div>
+        <p>player2</p>
+        <div id="placar2">0</div>
+
+        <input type="button" value="|>" onclick="controle('play')">
+        <input type="button" value="||" onclick="controle('pause')">
+        <input type="button" value="Restart" onclick="controle('reset')">
+    </div>
+
+    
+    <script>
+
+        let altura_Janela, largura_Janela;
+        largura_Janela = window.innerWidth;
+        altura_Janela = window.innerHeight;
+
+        if(largura_Janela >= 800){
+            largura_Janela = 800;
+            altura_Janela = 600;
+        };
+        
+        var canvas, ctx, frames = 0, velocidadebola = 4, velocidadeplayer = 20,
+        placarP1 = document.getElementById('placar1'), 
+        placarP2 = document.getElementById('placar2'),
+        status = '',
+        
+        player1 = {
+            x: 10,
+            y: altura_Janela/2 - 70/2,
+            altura: 70,
+            largura: 20,
+            cor: '#58f',
+
+            desenha: function(){
+                ctx.fillStyle = this.cor;
+                ctx.fillRect(this.x, this.y, this.largura, this.altura)
+            }
+        },
+
+        
+        player2 = {
+            altura: 70,
+            largura: 20,            
+            x: largura_Janela - (20+20/2),
+            y: altura_Janela/2 - 70/2,
+            cor: '#fff',
+
+            desenha: function(){
+                ctx.fillStyle = this.cor;
+                ctx.fillRect(this.x, this.y, this.largura, this.altura)
+            }
+        },
+
+        bola = {
+            altura:20,
+            largura:20,
+            x:largura_Janela/2 - 20/2 -300,
+            y:altura_Janela/2 - 20/2,
+            cor:'#651',
+
+            velocidadex: velocidadebola,
+            velocidadey: velocidadebola,
+
+            desenha: function(){
+                ctx.fillStyle = this.cor;
+                ctx.fillRect(this.x, this.y, this.largura, this.altura)
+            },
+
+            mover: function(){
+
+                this.x += this.velocidadex;
+                this.y += this.velocidadey;
+
+                if(this.x+this.largura > player2.x && this.y+this.altura-2 >= player2.y &&
+                this.y < player2.y+player2.altura){
+                    this.velocidadex = -this.velocidadex
+
+                }else if(this.x < player1.x+player1.largura && this.y+this.altura-2 >= player1.y &&
+                this.y < player1.y+player1.altura){
+                    this.velocidadex = -this.velocidadex
+
+                }else if(this.y+this.altura > altura_Janela){
+                    this.velocidadey = -this.velocidadey
+                }else if(this.y < 0){
+                    this.velocidadey = -this.velocidadey
+                };
+
+                if(this.x+this.largura > largura_Janela ){
+                    placarP1.innerText =  Number(placarP1.innerText)+1
+                    status = 'pause'
+                    let time = setInterval(()=>{
+                        clearInterval(time)
+                        status = 'jogando'
+                        bola.x = largura_Janela/2 - 20/2-300
+                        bola.y = altura_Janela/2 - 20/2
+                        
+                    },2000);
+                }else if(this.x < 0){
+                    placarP2.innerText =  Number(placarP2.innerText)+1
+                    status = 'pause'
+                    let time = setInterval(()=>{
+                        clearInterval(time)
+                        status = 'jogando'
+                        bola.x = largura_Janela/2 - 20/2+300
+                        bola.y = altura_Janela/2 - 20/2
+                        
+                    },2000);
+                };
+            }
+        },
+
+        aceptmoves = {
+            //Player 1
+            87: function(){
+                //console.log('CIMA1');
+                if(player1.y > 0){
+                    player1.y -= velocidadeplayer;
+                }
+            },
+            83: function(){
+                //console.log('BAIXO1');
+                if(player1.y+player1.altura < altura_Janela){
+                    player1.y += velocidadeplayer;
+                };
+            },
+            //Player 2
+            38: function(){
+                //console.log('CIMA2');
+                if(player2.y > 0){
+                    player2.y -= velocidadeplayer;
+                }
+            },
+            40: function(){
+                //console.log('BAIXO2 ');
+                if(player2.y+player2.altura < altura_Janela){
+                    player2.y += velocidadeplayer;
+                };                
+            },
+
+        }
+        
+        ;
+
+        function main(){
+            
+            canvas = document.createElement('canvas');
+            canvas.width = largura_Janela;
+            canvas.height = altura_Janela;
+            canvas.style.border = '1px solid #000';
+
+            ctx = canvas.getContext('2d');
+            document.body.appendChild(canvas);
+            document.addEventListener('keydown', click)
+            document.addEventListener('keyup', click)
+            roda();
+        };
+
+        function controle(cmd){
+            if(cmd == 'play'){
+                status = 'jogando'
+            }else if(cmd === 'reset'){
+                bola.x = largura_Janela/2 - 20/2-300
+                bola.y = altura_Janela/2 - 20/2
+                placarP1.innerText = '0'
+                placarP2.innerText = '0'
+                status = 'pause'
+            }else{
+                status = 'pause'
+            };
+        }
+
+        function click(event){
+            let tecla = event.keyCode;
+            let comand = aceptmoves[tecla];
+            //console.log(tecla);
+
+            if(comand){
+                comand();
+            };
+        };
+
+        function atualiza(){
+            frames++;
+            bola.mover();
+            
+        };
+
+        function desenha(){
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0,0,largura_Janela, altura_Janela);
+
+            
+            player1.desenha();
+            player2.desenha();
+            bola.desenha();
+        };
+
+        function roda(){
+            if(status === 'jogando'){
+                atualiza();
+            };
+            desenha();
+            window.requestAnimationFrame(roda)
+        };
+
+        //inicializa o jogo
+        main();
+    </script>    
+</body>
+</html>
