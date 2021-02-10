@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste Canvas</title>
+    <style>
+        canvas{
+            
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        .placar{
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+
+            margin-left: 5px;
+            margin-top: 32px;
+
+            background-color: blue;
+            width: 60px;
+            height: 150px;
+            font: bold 8 arial;
+        }
+        input{
+            margin-top: 50px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="placar">
+        <p>player1</p>
+        <div id="placar1">0</div>
+        <p>player2</p>
+        <div id="placar2">0</div>
+
+        <input type="button" value="|>" onclick="controle('play')">
+        <input type="button" value="||" onclick="controle('pause')">
+        <input type="button" value="Restart" onclick="controle('reset')">
+    </div>
+
+    
+    <script>
+        class player{
+            altura; largura; x; y; cor;
+            desenha(){
+                ctx.fillStyle = this.cor;
+                ctx.fillRect(this.x, this.y, this.largura, this.altura);
+            };
+            confg(alt, larg,Ex, Ey, color){
+                this.altura = alt;
+                this.largura = larg;
+                this.x = Ex;
+                this.y = Ey;
+                this.cor = color;
+            };
+        };
+        class bola{
+            altura; largura; x; y; cor; velocidadex;velocidadey;
+
+            confg(alt, larg,Ex, Ey, velo, color){
+                this.altura = alt;
+                this.largura = larg;
+                this.x = Ex;
+                this.y = Ey;
+                this.cor = color;
+                this.velocidadex = velo 
+                this.velocidadey = velo
+            };
+            desenha(){
+                ctx.fillStyle = this.cor;
+                ctx.fillRect(this.x, this.y, this.largura, this.altura);
+            };
+            mover(){
+
+                this.x += this.velocidadex;
+                this.y += this.velocidadey;
+
+                
+                if(this.x+this.largura > player2.x && this.y+this.altura-2 >= player2.y &&
+                this.y < player2.y+player2.altura){
+                    this.velocidadex = -this.velocidadex
+
+                }else if(this.x < player1.x+player1.largura && this.y+this.altura-2 >= player1.y &&
+                this.y < player1.y+player1.altura){
+                    this.velocidadex = -this.velocidadex
+
+                }else if(this.y+this.altura > altura_Janela){
+                    this.velocidadey = -this.velocidadey
+                }else if(this.y < 0){
+                    this.velocidadey = -this.velocidadey
+                };
+                
+                if(this.x+this.largura > largura_Janela ){
+                    placarP1.innerText =  Number(placarP1.innerText)+1
+                    status = 'pause'
+                    let time = setInterval(()=>{
+                        clearInterval(time)
+                        status = 'jogando'
+                        this.x = largura_Janela/2 - 20/2-300
+                        this.y = altura_Janela/2 - 20/2
+                        
+                    },2000);
+                }else if(this.x < 0){
+                    placarP2.innerText =  Number(placarP2.innerText)+1
+                    status = 'pause'
+                    let time = setInterval(()=>{
+                        clearInterval(time)
+                        status = 'jogando'
+                        this.x = largura_Janela/2 - 20/2+300
+                        this.y = altura_Janela/2 - 20/2
+                        
+                    },2000);
+                };
+            }
+        }
+
+        let canvas, ctx, altura_Janela, largura_Janela,
+            frames = 0, 
+            velocidadebola = 4, 
+            velocidadeplayer = 25,
+            placarP1 = document.getElementById('placar1'), 
+            placarP2 = document.getElementById('placar2'),
+            status = '',
+            altPlayer = 70,
+            largPlayer = 20
+        ;
+        largura_Janela = window.innerWidth;
+        altura_Janela = window.innerHeight;
+ 
+        if(largura_Janela >= 800){
+            largura_Janela = 800;
+            altura_Janela = 600;
+        };
+
+        function main(){
+            canvas = document.createElement('canvas');
+            canvas.width = largura_Janela;
+            canvas.height = altura_Janela;
+            canvas.style.border = '1px solid #000';
+            ctx = canvas.getContext('2d'); 
+            document.body.appendChild(canvas);
+            document.addEventListener('keydown', click)
+            document.addEventListener('keyup', click)
+            roda();
+        };
+
+        let player1 = new player, player2 = new player, bola1 = new bola;
+
+        player1.confg(altPlayer,largPlayer,10,altura_Janela/2 - altPlayer/2,'#fff');
+        player2.confg(altPlayer,largPlayer,largura_Janela - (largPlayer+20/2),altura_Janela/2 - altPlayer/2,'#fff');        
+        bola1.confg(20,20,largura_Janela/2 - 10,altura_Janela/2 - 10,5,'#fff');
+
+        aceptmoves = {
+            //Player 1
+            87: function(){
+                //console.log('CIMA1');
+                if(player1.y > 0){
+                    player1.y -= velocidadeplayer;
+                }
+            },
+            83: function(){
+                //console.log('BAIXO1');
+                if(player1.y+player1.altura < altura_Janela){
+                    player1.y += velocidadeplayer;
+                };
+            },
+            //Player 2
+            38: function(){
+                //console.log('CIMA2');
+                if(player2.y > 0){
+                    player2.y -= velocidadeplayer;
+                }
+            },
+            40: function(){
+                //console.log('BAIXO2 ');
+                if(player2.y+player2.altura < altura_Janela){
+                    player2.y += velocidadeplayer;
+                };                
+            },
+
+        };        
+
+        function controle(cmd){
+            if(cmd == 'play'){
+                status = 'jogando'
+            }else if(cmd === 'reset'){
+                bola1.x = largura_Janela/2 - 20/2-300
+                bola1.y = altura_Janela/2 - 20/2
+                placarP1.innerText = '0'
+                placarP2.innerText = '0'
+                status = 'pause'
+            }else{
+                status = 'pause'
+            };
+        }
+
+        function click(event){
+            let tecla = event.keyCode;
+            let comand = aceptmoves[tecla];
+            //console.log(tecla);
+
+            if(comand){
+                comand();
+            };
+        };
+
+        function atualiza(){
+            frames++;
+            bola1.mover();
+            
+        };
+
+        function desenha(){
+            ctx.fillStyle = '#000';
+            ctx.fillRect(0,0,largura_Janela, altura_Janela);
+            player1.desenha();
+            player2.desenha();
+            bola1.desenha();
+        };
+
+        function roda(){
+            if(status === 'jogando'){
+                atualiza();
+            };
+            desenha();
+            window.requestAnimationFrame(roda)
+        };
+
+        //inicializa o jogo
+        main();
+    </script>    
+</body>
+</html>
