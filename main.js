@@ -1,27 +1,33 @@
-//Determina o Tamanho da Tela
+//Declara todas a variaveis necessárias
 let windowWidth = window.innerWidth,
-    windowHeight = window.innerHeight;
+    windowHeight = window.innerHeight,
+    frames = 0,
+    gameover = 4,
+    font = 'normal 20pt arial', 
+    status = 'jogando',
+    speepPlayer,
+    speedGame = 8,
+    pontosP1 = 0,
+    pontosP2 = 3
+;
+
+//Determina o Tamanho da Tela
 if(windowWidth >= 800){
     windowWidth = 800;
     windowHeight = 600;
 };
-//Declara todas a Variaveis Necessárias
+
+//Declara os Objetos do jogo
 let canvas = document.getElementById('canvas'),
-    frames = 0,
-    font = 'normal 20pt arial', 
-    status = 'jogando',
-    speepPlayer,
-    speedGame = 3,
     backgrond = new CanvasElement('Retangulo', windowHeight, windowWidth, 0, 0, '#000'),
     player1 = new CanvasElement('Retangulo', 70, 20, 100, 100, '#ffff'),
     player2 = new CanvasElement('Retangulo', 70, 20, 200, 100, '#ffff'),
     bola = new CanvasElement('Circulo', 0, 0, 100, 100, '#ffff', 10, speedGame),
-    pontosP1 = new CanvasElement('Text', 0, 0, 100, 100, 'ffff',0,0, 'P1', font),
-    pontosP2 = new CanvasElement('Text', 0, 0, 200, 200, 'ffff',0,0, 'P2', font)
-
+    placarP1 = new CanvasElement('Text', 0, 0, 100, 100, 'ffff',0,0, `Player I - ${pontosP1}`, font),
+    placarP2 = new CanvasElement('Text', 0, 0, 200, 200, 'ffff',0,0, `Player II - ${pontosP1}`, font)
 ;
 
-bola.Mover = function(){
+bola.Mover = ()=>{
 
     bola.x += bola.velx;
     bola.y += bola.vely;
@@ -33,49 +39,96 @@ bola.Mover = function(){
     ;
 
 
-    if(bolacolid_D > windowWidth || bolacolid_E < 0){
+    if(bolacolid_D > windowWidth){
         bola.velx = -bola.velx;
-    };
-   
-    if(bolacolid_C < 0 || bolacolid_B > windowHeight){
+        placarP1.texto = `Player I - ${pontosP1+=1}`
+        gameOver();
+    }else if(bolacolid_E < 0){
+        bola.velx = -bola.velx;
+        placarP2.texto = `Player II - ${pontosP2+=1}`
+        gameOver();
+    }else if(bolacolid_C < 0 || bolacolid_B > windowHeight){
         bola.vely = -bola.vely;
     };
-
 
     
 };
 
+//Move os jogadores
+window.addEventListener('keypress', (event)=>{
+
+})
+
+function restart(){
+    status = 'Pause'
+    pontosP1 = 0;
+    pontosP2 = 0;
+    placarP1.texto = `Player I - ${pontosP1}`;
+    placarP2.texto = `Player II - ${pontosP2}`;
+    bola.x = windowWidth/2 - 330;
+    bola.y = windowHeight/2;
+};
+
+function gameOver(){
+    if(pontosP1 == gameover){
+        status = 'Pause'
+        placarP1.texto = 'You Win'
+        let time = setInterval(()=>{
+            clearInterval(time)
+            restart();
+        },3000);
+
+    }else if(pontosP2 == gameover){
+        status = 'Pause'
+        placarP2.texto = 'You Win'
+        let time = setInterval(()=>{
+            clearInterval(time)
+            restart();
+        },3000);
+    };
+};
+
+//Insere o Painel e Opções
+let painel = document.createElement('div');
+painel.setAttribute('class', 'confg');
+painel.innerHTML = ''+
+    '<input type="button" value="|>">'+
+    '<input type="button" value="||">'+
+    '<input type="button" value="Restart">'
+;
+document.body.appendChild(painel);
+
+
+//Inicializa o jogo
 function main(){
+    painel.style.display = 'none'
     canvas.width = windowWidth;
     canvas.height = windowHeight;
     canvas = canvas.getContext('2d');
 
-    roda();
-};
-
-//Loop do Jogo
-function roda(){
-    if(status == 'jogando'){
-        atualisa();
+    //Loop do Jogo
+    function roda(){
+        if(status == 'jogando'){
+            atualisa();
+        };
+        desenha();
+        window.requestAnimationFrame(roda);
     };
-    desenha();
-    window.requestAnimationFrame(roda);
-};
-//Desenha os CanvasElements
-function desenha(){
-    backgrond.desenha(canvas);
-    player1.desenha(canvas);
-    player2.desenha(canvas);
-    bola.desenha(canvas);
-    pontosP1.desenha(canvas);
-    pontosP2.desenha(canvas);
-    
-};
-//Atualiza os quadros do jogo
-function atualisa(){
-   frames++
-    bola.Mover();
-};
+    //Desenha os CanvasElements
+    function desenha(){
+        backgrond.desenha(canvas);
+        player1.desenha(canvas);
+        player2.desenha(canvas);
+        bola.desenha(canvas);
+        placarP1.desenha(canvas);
+        placarP2.desenha(canvas);
+        
+    };
+    //Atualiza os quadros do jogo
+    function atualisa(){
+    frames++
+        bola.Mover();
+    };
 
-//Inicializa o jogo
-main();
+    roda();
+}; main();

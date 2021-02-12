@@ -6,9 +6,10 @@ canvas{
     bottom: 0;
     right: 0;
     margin: auto;
+    overflow: hidden;
 }
 
-.placar{
+.confg{
     position: absolute;
     top: 0;
     left: 0;
@@ -16,12 +17,10 @@ canvas{
     right: 0;
     margin: auto;
 
-    margin-left: 5px;
-    margin-top: 32px;
 
-    background-color: blue;
-    width: 60px;
-    height: 150px;
+    background-color: rgb(32, 109, 133);
+    width: 400px;
+    height: 400px;
     font: bold 8 arial;
 }
 input{
