@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pong</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="placar">
+        <p>player1</p>
+        <div id="placar1">0</div>
+        <p>player2</p>
+        <div id="placar2">0</div>
+
+        <input type="button" value="|>" onclick="controle('play')">
+        <input type="button" value="||" onclick="controle('pause')">
+        <input type="button" value="Restart" onclick="controle('reset')">
+    </div>
+    <script src="class.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

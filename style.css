@@ -1,0 +1,29 @@
+canvas{
+            
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+}
+
+.placar{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+
+    margin-left: 5px;
+    margin-top: 32px;
+
+    background-color: blue;
+    width: 60px;
+    height: 150px;
+    font: bold 8 arial;
+}
+input{
+    margin-top: 50px;
+}
