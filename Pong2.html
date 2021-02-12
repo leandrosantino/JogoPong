@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas{
+            
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas" width="400" height="200" style="border:1px solid #c6c6c6;"></canvas>
+    <script>
+        let canvas = document.getElementById('canvas');
+        canvas = canvas.getContext('2d');
+
+        //canvas.font = 'normal 20pt arial'
+        //canvas.fillText('Placar',200,100);
+
+        canvas.fillStyle="#7F7F00";
+        canvas.arc(90,50,10,0,Math.PI*2,true);
+        canvas.fill();
+
+    </script>
+</body>
+</html>

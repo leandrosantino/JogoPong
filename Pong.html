@@ -61,7 +61,7 @@
             altura_Janela = 600;
         };
         
-        var canvas, ctx, frames = 0, velocidadebola = 4, velocidadeplayer = 4,
+        var canvas, ctx, frames = 0, velocidadebola = 4, velocidadeplayer =20,
         placarP1 = document.getElementById('placar1'), 
         placarP2 = document.getElementById('placar2'),
         status = '',
@@ -94,18 +94,24 @@
         },
 
         bola = {
-            altura:20,
+            altura:10,
             largura:20,
-            x:largura_Janela/2 - 20/2 -300,
+            x:largura_Janela/2 - 20/2 - 300,
             y:altura_Janela/2 - 20/2,
-            cor:'#651',
+            cor:"#7F7F00",
 
             velocidadex: velocidadebola,
             velocidadey: velocidadebola,
 
             desenha: function(){
-                ctx.fillStyle = this.cor;
-                ctx.fillRect(this.x, this.y, this.largura, this.altura)
+
+                ctx.fillStyle=this.cor;
+                ctx.beginPath();
+                ctx.arc(this.x,this.y,this.altura,0,Math.PI*2,true);
+                ctx.closePath();
+                ctx.fill();
+                //ctx.fillStyle = this.cor;
+                //ctx.fillRect(this.x, this.y, this.largura, this.altura)
             },
 
             mover: function(){
@@ -137,7 +143,7 @@
                         bola.y = altura_Janela/2 - 20/2
                         
                     },2000);
-                }else if(this.x < 0){
+                }else if(this.x-wsthis.altura < 0){
                     placarP2.innerText =  Number(placarP2.innerText)+1
                     status = 'pause'
                     let time = setInterval(()=>{
