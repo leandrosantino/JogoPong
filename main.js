@@ -4,11 +4,13 @@ let windowWidth = window.innerWidth,
     frames = 0,
     gameover = 4,
     font = 'normal 20pt arial', 
-    status = 'jogando',
-    speepPlayer,
-    speedGame = 8,
+    status = 'jogand',
+    speedPlayer = 20,
+    widthPlayer = 70,
+    heightPlayer = 20,
+    speedGame = 5,
     pontosP1 = 0,
-    pontosP2 = 3
+    pontosP2 = 0
 ;
 
 //Determina o Tamanho da Tela
@@ -20,8 +22,8 @@ if(windowWidth >= 800){
 //Declara os Objetos do jogo
 let canvas = document.getElementById('canvas'),
     backgrond = new CanvasElement('Retangulo', windowHeight, windowWidth, 0, 0, '#000'),
-    player1 = new CanvasElement('Retangulo', 70, 20, 100, 100, '#ffff'),
-    player2 = new CanvasElement('Retangulo', 70, 20, 200, 100, '#ffff'),
+    player1 = new CanvasElement('Retangulo', widthPlayer, heightPlayer, 10, 100, '#ffff'),
+    player2 = new CanvasElement('Retangulo',widthPlayer, heightPlayer, 10, 100, '#ffff'),
     bola = new CanvasElement('Circulo', 0, 0, 100, 100, '#ffff', 10, speedGame),
     placarP1 = new CanvasElement('Text', 0, 0, 100, 100, 'ffff',0,0, `Player I - ${pontosP1}`, font),
     placarP2 = new CanvasElement('Text', 0, 0, 200, 200, 'ffff',0,0, `Player II - ${pontosP1}`, font)
@@ -56,7 +58,8 @@ bola.Mover = ()=>{
 
 //Move os jogadores
 window.addEventListener('keypress', (event)=>{
-
+    //player2.y += speedPlayer;
+    console.log(event.key);
 })
 
 function restart(){
@@ -105,6 +108,13 @@ function main(){
     canvas.width = windowWidth;
     canvas.height = windowHeight;
     canvas = canvas.getContext('2d');
+
+    bola.x = windowWidth/2;
+    bola.y = windowHeight/2;
+    player1.y = windowHeight/2 - player1.altura/2
+    player2.y = windowHeight/2 - player2.altura/2
+    player2.x = windowWidth-player2.largura - 10
+    
 
     //Loop do Jogo
     function roda(){
