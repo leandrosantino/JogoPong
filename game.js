@@ -120,20 +120,8 @@ function gameOver(){
 
 function setStatus(cmd){status = cmd;};
 
-//Insere o Painel e Opções
-let painel = document.createElement('div');
-painel.setAttribute('class', 'confg');
-painel.innerHTML = ''+
-    '<input type="button" value="|>">'+
-    '<input type="button" value="||">'+
-    '<input type="button" value="Restart">'
-;
-document.body.appendChild(painel);
-
-
 //Inicializa o jogo
 function main(){
-    painel.style.display = 'none'
     canvas.width = windowWidth;
     canvas.height = windowHeight;
     canvas = canvas.getContext('2d');222
@@ -175,4 +163,4 @@ function main(){
     };
 
     roda();
-}; main();
+};
