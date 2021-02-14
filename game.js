@@ -13,7 +13,7 @@ let windowWidth = window.innerWidth,
     widthPlayer = 80,
     heightPlayer = 20,
     speedGame = 3.5,
-    pontosP1 = 9,
+    pontosP1 = 0,
     pontosP2 = 0
 ;
 
@@ -188,3 +188,6 @@ function main(){
 
     roda();
 };
+
+
+
