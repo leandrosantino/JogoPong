@@ -8,12 +8,12 @@ let windowWidth = window.innerWidth,
     frames = 0,
     gameover = 10,
     font = 'normal 30pt arial', 
-    status = 'jogand',
+    status,
     speedPlayer = 19,
     widthPlayer = 80,
     heightPlayer = 20,
     speedGame = 3.5,
-    pontosP1 = 9,
+    pontosP1 = 0,
     pontosP2 = 0
 ;
 
@@ -71,7 +71,7 @@ bola.Mover = ()=>{
     };
 
     if(bolacolid_D > windowWidth){
-        setStatus('pause');
+        setStatus('ponto');
         placarP1.texto = `${pontosP1+=1}`;
         let time  = setTimeout(() => {
            bola.x = windowWidth/2 - 330;
@@ -84,7 +84,7 @@ bola.Mover = ()=>{
             
         
     }else if(bolacolid_E < 0){
-        setStatus('pause');
+        setStatus('ponto');
         placarP2.texto = `${pontosP2+=1}`;
         let time  = setTimeout(() => {
             bola.x = windowWidth/2 + 330;
@@ -102,15 +102,16 @@ bola.Mover = ()=>{
 window.addEventListener('keyup' , moverPlayer);
 window.addEventListener('keydown' , moverPlayer);
 function moverPlayer(event){
-   let tecla = event.key;
+    let tecla = event.key;
+    if(status == 'jogando' || status == 'ponto'){     
     switch(tecla){
         case 'w': if(player1.y > 0){player1.y -= speedPlayer}; break;
         case 's': if(player1.y+player1.altura < windowHeight){player1.y += speedPlayer}; break;
-        case 'e': if(bola.x == windowWidth/2 - 330 && bola.y == windowHeight/2){setStatus('jogando')}; break;
         case '8': if(player2.y > 0){player2.y -= speedPlayer}; break;
         case '2': if(player2.y+player2.altura < windowHeight){player2.y += speedPlayer}; break;
         case '4': if(bola.x == windowWidth/2 + 330 && bola.y == windowHeight/2){setStatus('jogando')}; break;
-    };  
+        case 'e': if(bola.x == windowWidth/2 - 330 && bola.y == windowHeight/2){setStatus('jogando')}; break;
+    }};
 };
 
 function restart(){
@@ -121,6 +122,9 @@ function restart(){
     placarP2.texto = `${pontosP2}`;
     bola.x = windowWidth/2 - 330;
     bola.y = windowHeight/2;
+    player1.y = windowHeight/2 - player1.altura/2;
+    player2.y = windowHeight/2 - player2.altura/2;
+    player2.x = windowWidth-player2.largura;
 };
 
 function gameOver(){
@@ -188,6 +192,3 @@ function main(){
 
     roda();
 };
-
-
-
