@@ -13,7 +13,7 @@ let windowWidth = window.innerWidth,
     widthPlayer = 80,
     heightPlayer = 20,
     speedGame = 3.5,
-    pontosP1 = 0,
+    pontosP1 = 9,
     pontosP2 = 0
 ;
 
@@ -74,7 +74,6 @@ bola.Mover = ()=>{
         setStatus('pause');
         placarP1.texto = `${pontosP1+=1}`;
         let time  = setTimeout(() => {
-           clearTimeout(time);
            bola.x = windowWidth/2 - 330;
            bola.y = windowHeight/2;
            player1.y = windowHeight/2 - player1.altura/2;
@@ -88,7 +87,6 @@ bola.Mover = ()=>{
         setStatus('pause');
         placarP2.texto = `${pontosP2+=1}`;
         let time  = setTimeout(() => {
-            clearTimeout(time);
             bola.x = windowWidth/2 + 330;
             bola.y = windowHeight/2;
             player1.y = windowHeight/2 - player1.altura/2;
@@ -129,13 +127,15 @@ function gameOver(){
     if(pontosP1 == gameover){
         status = 'Pause'
         placarP1.texto = 'You Win'
-        restart();
-
+        setTimeout(() => {
+          restart();
+        }, 3000);
     }else if(pontosP2 == gameover){
         status = 'Pause'
         placarP2.texto = 'You Win'
-        restart();
-
+        setTimeout(() => {
+            restart();
+        }, 3000);
     };
 };
 
