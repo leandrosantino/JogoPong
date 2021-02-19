@@ -16,14 +16,26 @@ canvas{
     bottom: 0;
     right: 0;
     margin: auto;
-
+    text-align: center;
 
     background-color: rgb(32, 109, 133);
     width: 400px;
-    height: 400px;
+    height: 200px;
     font: bold 8 arial;
 }
 input{
     margin-top: 50px;
     margin-left: 0px;
+}
+h1{
+    font: bold 30pt arial;
+}
+input{
+    border-radius: 10px;
+    border:solid 1px black;
+    width: 180px;
+    height: 30px;
+    margin-left: 0px;
+    font: bold 12pt arial;
+
 }

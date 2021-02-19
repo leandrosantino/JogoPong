@@ -5,6 +5,7 @@ setStatus('inicio');
 let painel = document.createElement('div');
 painel.setAttribute('class', 'confg');
 painel.innerHTML = ''+
+    '<h1>Pong</h1>'+
     '<input type="button" value="Jogar" id="jogar">'+
     '<input type="button" value="Pause" id="pause">'+
     '<input type="button" value="Restart" id="restart">'
@@ -36,8 +37,3 @@ reset.addEventListener('click', ()=>{
     painel.style.display = 'none';
     restart();
 });
-
-
-//pause.addEventListener('click', ()=>{});
-//painel.style.display = 'none';
-
